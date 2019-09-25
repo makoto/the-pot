@@ -21,7 +21,7 @@ Initially,   I was adding the ins/out of commitment into `MoneyEntity` but that 
 
 I have used The Graph on and off by mostly querying already made subgraph or extending existing ones, so it was the first time to create a subgraph from scratch.
 
-The documentation is a lot clearer than what it was 6 months ago when I had first looked into it during ETH Denver. Also, the support team at Discord was super helpful where Leo or Jannis constantly answering questions.
+The documentation is a lot clearer than what it was 6 months ago when I had first looked into it during ETH Denver. Also, the support team at Discord was super helpful where Leo , Jannis and other team members constantly answering my questions.
 
 The ability to scan any block and ethereum calls were useful features but it took a lot of time to index (2~5 hrs) which made my development super slow.
 
