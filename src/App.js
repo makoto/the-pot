@@ -15,6 +15,9 @@ let Container = styled.div({
   flexDirection: 'row'
 })
 
+let SmallText = styled.div({
+  fontSize:'small'
+})
 let OuterContainer = styled.div({
   width:'90%',
 })
@@ -194,11 +197,20 @@ function App() {
                       in: 'spline'
                     }
                   };
-    
+                  const lastnumins = numins[numins.length - 1]
+                  const lastinsDai = insDai[insDai.length - 1]
+                  const lastins = ins[ins.length - 1]
+                  console.log({lastnumins, lastinsDai, lastins})
                 return (
                   <>
                   <div>
-                  {meta.numParties} parties are currently hosted on Kickback
+                  {meta && meta.numParties} events are currently hosted on Kickback.
+                  <br/>
+                  {lastnumins} people are committing {lastins} ETH and {lastinsDai} DAI to attend.
+                  <br/>
+                  <SmallText>
+                  The data powered by  <a href='https://thegraph.com/explorer/subgraph/makoto/deployer'>The Graph</a>.
+                  </SmallText>
                   </div>
                   <OuterContainer>
                   <Container>
@@ -220,7 +232,9 @@ function App() {
                       />
                     </ChartColumn>
                     <ChartColumn>
-                      <h2>DAI </h2>
+                      <h2>
+                        DAI
+                      </h2>
                       <C3Chart
                         data={chartdataDai}
                         axis={axis}
