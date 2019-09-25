@@ -106,7 +106,7 @@ function App() {
           {({ metaloading, metaerror, data:metadata}) => {
             const meta = metadata && metadata.metaEntities[0]
             console.log({meta})
-            if (metaloading) return <div>Loading...</div>;
+            if (!meta) return <div>Loading...</div>;
             if (metaerror) return <div>Error :(</div>;
             return (
               <Query query={GET_STATS}>
@@ -250,7 +250,7 @@ function App() {
                     <h3>Participants</h3>
                     <Chart
                       data={chartdataParticipants}
-                      max={(meta && meta.limitOfParticipants) || 100}
+                      max={(meta && meta.limitOfParticipants)}
                     />
                   </ParticipantContainer>
                   </OuterContainer>
