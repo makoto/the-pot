@@ -29,7 +29,7 @@ Then Leo suggested using datastore template which satisfied most of my requireme
 
 ## What's next?
 
-- Increase insurance amount as pot size increase (could not do because I was unable to verify smart contract source code on Etherscan which is prerequisite to get quotes from Nexus mutual).
+- Buy insurance as the pot size increases (could not do because I was unable to verify smart contract source code on Etherscan which is prerequisite to get a quote from Nexus mutual).
 - Convert DAI into RDAI.
 
 ## How to start
