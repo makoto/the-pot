@@ -206,7 +206,7 @@ function App() {
                   <div>
                   {meta && meta.numParties} events are currently hosted on <a href='https://kickback.events/events'>Kickback</a>.
                   <br/>
-                  {lastnumins} people are committing {lastins} ETH and {lastinsDai} DAI to attend.
+                  {lastnumins} people are committing {lastins} ETH and {lastinsDai} DAI in total to attend.
                   <br/>
                   <SmallText>
                   The data powered by  <a href='https://thegraph.com/explorer/subgraph/makoto/deployer'>The Graph</a>.
