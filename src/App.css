@@ -7,7 +7,7 @@
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: rgb(110, 118, 255);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -21,6 +21,8 @@
   color: #09d3ac;
 }
 
-#chart .c3-line-data2 {
-  stroke-width: 15px;
+
+* {
+  fill-opacity:1;
+  fill: white;
 }

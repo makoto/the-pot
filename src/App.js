@@ -42,6 +42,7 @@ const GET_META = gql`
   query {
     metaEntities {
       numParties
+      limitOfParticipants
       numMoneyTransactions
     }
   }
@@ -60,6 +61,37 @@ const GET_STATS = gql`
     }
   }
 `
+function Chart({data, grid, max}){
+  const axis = {
+    x: {
+        type: 'timeseries',
+        tick: {
+            format: '%Y/%m/%d',
+            culling: {
+              max: 4 // the number of tick texts will be adjusted to less than this value
+            }
+        }
+    },
+    y: {
+      max: 150,
+      // Range includes padding, set 0 if no padding needed
+      padding: {top:10, bottom:10}
+    }
+  }
+
+  return(
+    <C3Chart
+      data={data}
+      axis={axis}
+      tooltip={{show:false}}
+      point= {{show:false}}
+      grid= { {y:{lines:[{value: grid, text: 'CAPACITY'}]} }}
+      color={{
+        pattern: ['#aec7e8']
+      }}
+    />
+  )
+}
 
 function App() {
   return (
@@ -112,12 +144,12 @@ function App() {
               }) =>{
                 let date = moment(new Date(parseInt(timestamp) * 1000))
                 dates.push(date)
-                console.log({
-                  numIn,
-                  amountIn,
-                  amountInDai  
-                })
-                console.log({numins})
+                // console.log({
+                //   numIn,
+                //   amountIn,
+                //   amountInDai  
+                // })
+                // console.log({numins})
                 pushItem(numins, numIn, false)
                 pushItem(ins, amountIn)
                 pushItem(outs, amountOut)
@@ -131,32 +163,40 @@ function App() {
               insDai.map((d, i)=>{
                 diffsDai[i] = d - outsDai[i]
               })
-              numins.unshift('In')
-              ins.unshift('In')
-              outs.unshift('Out')
-              diffs.unshift('Delta')
-              insDai.unshift('In')
-              outsDai.unshift('Out')
-              diffsDai.unshift('Delta')
+              numins.unshift('in')
+              ins.unshift('in')
+              outs.unshift('out')
+              diffs.unshift('delta')
+              insDai.unshift('in')
+              outsDai.unshift('out')
+              diffsDai.unshift('delta')
 
               const chartdata = {
                   x: 'x',
                   columns: [
                     dates, ins
-                  ]
+                  ],
+                  types: {
+                    in: 'spline'
+                  }  
               };
-              console.log({dates, numins, ins, insDai})
               const chartdataDai = {
                 x: 'x',
                 columns: [
-                  dates, insDai
-                ]
+                  dates, insDai,
+                ],
+                types: {
+                  in: 'spline'
+                },
               };
               const chartdataParticipants = {
                 x: 'x',
                 columns: [
                   dates, numins
-                ]
+                ],
+                types: {
+                  in: 'spline'
+                }
               };
 
             return (
@@ -168,6 +208,12 @@ function App() {
                     data={chartdata}
                     axis={axis}
                     tooltip={{show:false}}
+                    point= {{show:false}}
+                    regions={
+                      [
+                        {start:0, end:1768844390, class:'foo'}
+                      ]
+                    } 
                     color={{
                       pattern: ['#1f77b4']
                     }}
@@ -179,6 +225,7 @@ function App() {
                     data={chartdataDai}
                     axis={axis}
                     tooltip={{show:false}}
+                    point= {{show:false}}
                     color={{
                       pattern: ['#ff7f0e']
                     }}
@@ -187,13 +234,9 @@ function App() {
               </Container>
               <ParticipantContainer>
                 <h3>Participants</h3>
-                <C3Chart
+                <Chart
                   data={chartdataParticipants}
-                  axis={axis}
-                  tooltip={{show:false}}
-                  color={{
-                    pattern: ['#aec7e8']
-                  }}
+                  grid= '100'
                 />
               </ParticipantContainer>
               </OuterContainer>
