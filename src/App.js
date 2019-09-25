@@ -209,7 +209,7 @@ function App() {
                   {lastnumins} people are committing {lastins} ETH and {lastinsDai} DAI in total to attend.
                   <br/>
                   <SmallText>
-                  The data powered by  <a href='https://thegraph.com/explorer/subgraph/makoto/deployer'>The Graph</a>.
+                  The data powered by  <a href='https://thegraph.com/explorer/subgraph/makoto/deployer'>The Graph</a>. The <a href="https://github.com/makoto/the-pot">code</a>.
                   </SmallText>
                   </div>
                   <OuterContainer>
