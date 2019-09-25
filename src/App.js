@@ -204,7 +204,7 @@ function App() {
                 return (
                   <>
                   <div>
-                  {meta && meta.numParties} events are currently hosted on Kickback.
+                  {meta && meta.numParties} events are currently hosted on <a href='https://kickback.events/events'>Kickback</a>.
                   <br/>
                   {lastnumins} people are committing {lastins} ETH and {lastinsDai} DAI to attend.
                   <br/>

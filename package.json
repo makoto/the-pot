@@ -15,9 +15,11 @@
     "react-emotion": "^10.0.0",
     "react-scripts": "3.1.2"
   },
+  "homepage": "https://pot.kickback.events",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "deploy": "yarn build && surge build pot.kickback.events",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
