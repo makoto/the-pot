@@ -79,7 +79,7 @@ function Chart({data, grid, max}){
       min:0,
       max: max + 10,
       // Range includes padding, set 0 if no padding needed
-      padding: {top:10, bottom:10}
+      padding: {bottom:10}
     }
   }
 
@@ -91,7 +91,7 @@ function Chart({data, grid, max}){
       point= {{show:false}}
       grid= { {y:{lines:[{value: max, text: 'MAX CAPACITY'}]} }}
       color={{
-        pattern: ['#aec7e8']
+        pattern: ['#2ca02c']
       }}
     />
   )
@@ -101,7 +101,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>Kickback staking</h1>
+        <h1>The Pot 🍯</h1>
         <Query query={GET_META}>
           {({ metaloading, metaerror, data:metadata}) => {
             const meta = metadata && metadata.metaEntities[0]
@@ -176,7 +176,7 @@ function App() {
                         dates, ins
                       ],
                       types: {
-                        in: 'spline'
+                        in: 'area-spline'
                       }  
                   };
                   const chartdataDai = {
@@ -185,7 +185,7 @@ function App() {
                       dates, insDai,
                     ],
                     types: {
-                      in: 'spline'
+                      in: 'area-spline'
                     },
                   };
                   const chartdataParticipants = {
@@ -194,7 +194,7 @@ function App() {
                       dates, numins
                     ],
                     types: {
-                      in: 'spline'
+                      in: 'area-spline'
                     }
                   };
                   const lastnumins = numins[numins.length - 1]
@@ -250,7 +250,7 @@ function App() {
                     <h3>Participants</h3>
                     <Chart
                       data={chartdataParticipants}
-                      max={meta.limitOfParticipants}
+                      max={(meta && meta.limitOfParticipants) || 100}
                     />
                   </ParticipantContainer>
                   </OuterContainer>
