@@ -73,7 +73,8 @@ function Chart({data, grid, max}){
         }
     },
     y: {
-      max: 150,
+      min:0,
+      max: max + 10,
       // Range includes padding, set 0 if no padding needed
       padding: {top:10, bottom:10}
     }
@@ -85,7 +86,7 @@ function Chart({data, grid, max}){
       axis={axis}
       tooltip={{show:false}}
       point= {{show:false}}
-      grid= { {y:{lines:[{value: grid, text: 'CAPACITY'}]} }}
+      grid= { {y:{lines:[{value: max, text: 'MAX CAPACITY'}]} }}
       color={{
         pattern: ['#aec7e8']
       }}
@@ -99,147 +100,150 @@ function App() {
       <header className="App-header">
         <h1>Kickback staking</h1>
         <Query query={GET_META}>
-          {({ loading, error, data }) => {
-            if (loading) return <div>Loading...</div>;
-            console.log({data})
-            if (error) return <div>Error :(</div>;
+          {({ metaloading, metaerror, data:metadata}) => {
+            const meta = metadata && metadata.metaEntities[0]
+            console.log({meta})
+            if (metaloading) return <div>Loading...</div>;
+            if (metaerror) return <div>Error :(</div>;
             return (
-              <div>
-                {data.metaEntities[0].numParties} parties are currently hosted on Kickback
-              </div>
-            )
-          }}
-        </Query>
-        <Query query={GET_STATS}>
-          {({ loading, error, data }) => {
-            if (loading) return <div>Loading...</div>;
-
-            const pushItem = function(items, item, iscurrency=true){
-              let delimiter = iscurrency ?  (10 ** 18) : 1
-              let lastitem = items[items.length - 1] || 0
-              let newitem = (parseInt(item) || 0) / (delimiter)
-              items.push(lastitem + newitem )
-            }
-            console.log({data})
-            if (error) return <div>Error :(</div>;
-
-              let dates = []
-              let numins = []
-              let ins = []
-              let outs = []
-              let insDai = []
-              let outsDai = []
-              let diffs = []
-              let diffsDai = []
-              data.statsEntities
-              .sort((a, b) => a.timestamp - b.timestamp)
-              .map(({
-                timestamp,
-                numIn,
-                numOut,
-                amountIn,
-                amountOut,
-                amountInDai,
-                amountOutDai
-              }) =>{
-                let date = moment(new Date(parseInt(timestamp) * 1000))
-                dates.push(date)
-                // console.log({
-                //   numIn,
-                //   amountIn,
-                //   amountInDai  
-                // })
-                // console.log({numins})
-                pushItem(numins, numIn, false)
-                pushItem(ins, amountIn)
-                pushItem(outs, amountOut)
-                pushItem(insDai, amountInDai)
-                pushItem(outsDai, amountOutDai)
-              });
-              dates.unshift('x')
-              ins.map((d, i)=>{
-                diffs[i] = d - outs[i]
-              })
-              insDai.map((d, i)=>{
-                diffsDai[i] = d - outsDai[i]
-              })
-              numins.unshift('in')
-              ins.unshift('in')
-              outs.unshift('out')
-              diffs.unshift('delta')
-              insDai.unshift('in')
-              outsDai.unshift('out')
-              diffsDai.unshift('delta')
-
-              const chartdata = {
-                  x: 'x',
-                  columns: [
-                    dates, ins
-                  ],
-                  types: {
-                    in: 'spline'
-                  }  
-              };
-              const chartdataDai = {
-                x: 'x',
-                columns: [
-                  dates, insDai,
-                ],
-                types: {
-                  in: 'spline'
-                },
-              };
-              const chartdataParticipants = {
-                x: 'x',
-                columns: [
-                  dates, numins
-                ],
-                types: {
-                  in: 'spline'
+              <Query query={GET_STATS}>
+              {({ loading, error, data }) => {
+                if (loading) return <div>Loading...</div>;
+    
+                const pushItem = function(items, item, iscurrency=true){
+                  let delimiter = iscurrency ?  (10 ** 18) : 1
+                  let lastitem = items[items.length - 1] || 0
+                  let newitem = (parseInt(item) || 0) / (delimiter)
+                  items.push(lastitem + newitem )
                 }
-              };
-
-            return (
-              <OuterContainer>
-              <Container>
-                <ChartColumn>
-                  <h2>ETH</h2>
-                  <C3Chart
-                    data={chartdata}
-                    axis={axis}
-                    tooltip={{show:false}}
-                    point= {{show:false}}
-                    regions={
-                      [
-                        {start:0, end:1768844390, class:'foo'}
-                      ]
-                    } 
-                    color={{
-                      pattern: ['#1f77b4']
-                    }}
-                  />
-                </ChartColumn>
-                <ChartColumn>
-                  <h2>DAI </h2>
-                  <C3Chart
-                    data={chartdataDai}
-                    axis={axis}
-                    tooltip={{show:false}}
-                    point= {{show:false}}
-                    color={{
-                      pattern: ['#ff7f0e']
-                    }}
-                  />
-                </ChartColumn>
-              </Container>
-              <ParticipantContainer>
-                <h3>Participants</h3>
-                <Chart
-                  data={chartdataParticipants}
-                  grid= '100'
-                />
-              </ParticipantContainer>
-              </OuterContainer>
+                console.log({data})
+                if (error) return <div>Error :(</div>;
+    
+                  let dates = []
+                  let numins = []
+                  let ins = []
+                  let outs = []
+                  let insDai = []
+                  let outsDai = []
+                  let diffs = []
+                  let diffsDai = []
+                  data.statsEntities
+                  .sort((a, b) => a.timestamp - b.timestamp)
+                  .map(({
+                    timestamp,
+                    numIn,
+                    numOut,
+                    amountIn,
+                    amountOut,
+                    amountInDai,
+                    amountOutDai
+                  }) =>{
+                    let date = moment(new Date(parseInt(timestamp) * 1000))
+                    dates.push(date)
+                    // console.log({
+                    //   numIn,
+                    //   amountIn,
+                    //   amountInDai  
+                    // })
+                    // console.log({numins})
+                    pushItem(numins, numIn, false)
+                    pushItem(ins, amountIn)
+                    pushItem(outs, amountOut)
+                    pushItem(insDai, amountInDai)
+                    pushItem(outsDai, amountOutDai)
+                  });
+                  dates.unshift('x')
+                  ins.map((d, i)=>{
+                    diffs[i] = d - outs[i]
+                  })
+                  insDai.map((d, i)=>{
+                    diffsDai[i] = d - outsDai[i]
+                  })
+                  numins.unshift('in')
+                  ins.unshift('in')
+                  outs.unshift('out')
+                  diffs.unshift('delta')
+                  insDai.unshift('in')
+                  outsDai.unshift('out')
+                  diffsDai.unshift('delta')
+    
+                  const chartdata = {
+                      x: 'x',
+                      columns: [
+                        dates, ins
+                      ],
+                      types: {
+                        in: 'spline'
+                      }  
+                  };
+                  const chartdataDai = {
+                    x: 'x',
+                    columns: [
+                      dates, insDai,
+                    ],
+                    types: {
+                      in: 'spline'
+                    },
+                  };
+                  const chartdataParticipants = {
+                    x: 'x',
+                    columns: [
+                      dates, numins
+                    ],
+                    types: {
+                      in: 'spline'
+                    }
+                  };
+    
+                return (
+                  <>
+                  <div>
+                  {meta.numParties} parties are currently hosted on Kickback
+                  </div>
+                  <OuterContainer>
+                  <Container>
+                    <ChartColumn>
+                      <h2>ETH</h2>
+                      <C3Chart
+                        data={chartdata}
+                        axis={axis}
+                        tooltip={{show:false}}
+                        point= {{show:false}}
+                        regions={
+                          [
+                            {start:0, end:1768844390, class:'foo'}
+                          ]
+                        } 
+                        color={{
+                          pattern: ['#1f77b4']
+                        }}
+                      />
+                    </ChartColumn>
+                    <ChartColumn>
+                      <h2>DAI </h2>
+                      <C3Chart
+                        data={chartdataDai}
+                        axis={axis}
+                        tooltip={{show:false}}
+                        point= {{show:false}}
+                        color={{
+                          pattern: ['#ff7f0e']
+                        }}
+                      />
+                    </ChartColumn>
+                  </Container>
+                  <ParticipantContainer>
+                    <h3>Participants</h3>
+                    <Chart
+                      data={chartdataParticipants}
+                      max={meta.limitOfParticipants}
+                    />
+                  </ParticipantContainer>
+                  </OuterContainer>
+                  </>
+                )
+              }}
+            </Query>    
             )
           }}
         </Query>
