@@ -12,14 +12,14 @@ The pot aggregates and visualises how much commitments on active Kickback events
 ## What is significant about this hack?
 
 The ability to track how much commitments have been on our smartcontract is critical for us to assess the overall risk as well as exploring the opportunity to receive interests via Compound.
-The historical data does not exist even in our backend database and keep syncing blockchain is a daunting task so kudos for The graph team taking care of all the heavy lifting works.
+The historical data does not exist even in our backend database and keep syncing blockchain is a daunting task so kudos for The Graph team taking care of all the heavy lifting works.
 
 One thing I did differently than originally planned was to track stats info as you index.
 Initially,   I was adding the ins/out of commitment into `MoneyEntity` but that forces frontend to traverse potentially thousands of data (initially I was tracking thousands of data since Devcon4). Keeping the aggregate data into `MetaEntry` and daily stats into `StatsEntry` made frontend query super simple.
 
-## Experience using The graph.
+## Experience using The Graph.
 
-I have used the graph on and off by mostly querying already made subgraph or extending existing ones, so it was the first time to create a subgraph from scratch.
+I have used The Graph on and off by mostly querying already made subgraph or extending existing ones, so it was the first time to create a subgraph from scratch.
 
 The documentation is a lot clearer than what it was 6 months ago when I had first looked into it during ETH Denver. Also, the support team at Discord was super helpful where Leo or Jannis constantly answering questions.
 
