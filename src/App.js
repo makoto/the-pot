@@ -28,6 +28,8 @@ let ChartColumn = styled.div({
   width:'40%',
   // float:'left'
 })
+let ActivityContainer = styled.div({
+})
  
 const axis = {
   x: {
@@ -64,6 +66,21 @@ const GET_STATS = gql`
     }
   }
 `
+
+const GET_PARTICIPATION = gql`
+  query {
+    moneyEntities(orderBy:timestamp, orderDirection:desc, first:20){
+      id
+      direction
+      amount
+      partyAddress
+      userAddress
+      tokenAddress
+      timestamp
+    }
+  }
+`
+
 function Chart({data, grid, max}){
   const axis = {
     x: {
@@ -247,7 +264,7 @@ function App() {
                     </ChartColumn>
                   </Container>
                   <ParticipantContainer>
-                    <h3>Participants</h3>
+                    <h2>Participants</h2>
                     <Chart
                       data={chartdataParticipants}
                       max={(meta && meta.limitOfParticipants)}
@@ -261,6 +278,35 @@ function App() {
             )
           }}
         </Query>
+        <ActivityContainer>
+        <h2>Activities</h2>
+        <Query query={GET_PARTICIPATION}>
+          {({ loading, error, data}) => {
+            console.log({data})
+            if (loading) return <div>Loading...</div>;
+            if (error) return <div>Error :(</div>;
+              const listItems = data.moneyEntities.map((d) => {
+                const amount = d.amount / (10 ** 18)
+                const unit = d.tokenAddress == '0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359' ? 'DAI' : 'ETH'
+                const date = moment(new Date(parseInt(d.timestamp) * 1000)).fromNow();
+                const url = `https://kickback.events/event/${d.partyAddress}`
+                console.log({url})
+                const address = (
+                  <a href={url}>{d.partyAddress.slice(0,5)}</a>
+                )
+                return(
+                  <tr><td>{amount} {unit} was commited into {address}... {date}  </td></tr>
+                )                
+              }
+              );
+            return (
+              <table>
+                {listItems}
+              </table>
+            )
+          }}
+        </Query>
+        </ActivityContainer>
       </header>
     </div>
   );
