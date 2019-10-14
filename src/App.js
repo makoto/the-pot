@@ -290,12 +290,13 @@ function App() {
                 const unit = d.tokenAddress == '0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359' ? 'DAI' : 'ETH'
                 const date = moment(new Date(parseInt(d.timestamp) * 1000)).fromNow();
                 const url = `https://kickback.events/event/${d.partyAddress}`
-                console.log({url})
+                console.log({d, url})
                 const address = (
                   <a href={url}>{d.partyAddress.slice(0,5)}</a>
                 )
+                const direction = d.direction == 'IN' ? 'was commited into' : 'was withdrawn from'
                 return(
-                  <tr><td>{amount} {unit} was commited into {address}... {date}  </td></tr>
+                  <tr><td>{amount.toFixed(2)} {unit} {direction} {address}... {date}  </td></tr>
                 )                
               }
               );
